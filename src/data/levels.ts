@@ -1,0 +1,22 @@
+export const levels = [
+    { level: 1, xp: 0, title: "Novice" },
+    { level: 2, xp: 100, title: "Apprentice" },
+    { level: 3, xp: 300, title: "Journeyman" },
+    { level: 4, xp: 600, title: "Expert" },
+    { level: 5, xp: 1000, title: "Master" },
+    { level: 6, xp: 1500, title: "Grandmaster" },
+    { level: 7, xp: 2100, title: "Legend" },
+    { level: 8, xp: 2800, title: "Mythic" },
+    { level: 9, xp: 3725, title: "Epic" },
+    { level: 10, xp: 4500, title: "Godlike" },
+    { level: 11, xp: 5550, title: "Immortal" },
+    { level: 12, xp: 6600, title: "Transcendent" },
+    { level: 13, xp: 7800, title: "Ascendant" },
+    { level: 14, xp: 9100, title: "Supreme" },
+    { level: 15, xp: 10500, title: "Ultimate" },
+    { level: 16, xp: 12000, title: "Champion" },
+    { level: 17, xp: 13600, title: "Conqueror" },
+    { level: 18, xp: 15300, title: "Vanquisher" },
+    { level: 19, xp: 17100, title: "Hero" },
+    { level: 20, xp: 19000, title: "Legendary" }
+];
