@@ -11,7 +11,7 @@ export default function XPLogList() {
   <div className="mt-8 w-full">
     <h2 className="text-lg font-semibold mb-2">Task Log</h2>
     <ul className="space-y-2 w-full max-h-[420px] overflow-y-auto">
-      {xpLog.map((entry) => (
+      {[...xpLog].reverse().map((entry) => (
         <li key={entry.id} className="border p-2 rounded bg-gray-50 flex justify-between items-center">
           <div className="flex flex-col items-start">
             <span className="text-black font-medium">{entry.title}</span>

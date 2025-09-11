@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { useXPStore } from "../store/useXPStore";
+import type { Task } from "../store/useXPStore"
 
-export default function TaskForm() {
-    const additionalTask = useXPStore((state) => state.addTask);
+type TaskFormProps = {
+    onAddTask: (task: Task) => void;
+};
+
+export default function TaskForm({ onAddTask }: TaskFormProps) {
+
     const [xpValue, setXpValue] = useState(0);
 
     const handleSubmit = (e: React.FormEvent) => { 
@@ -21,7 +25,7 @@ export default function TaskForm() {
             note: formInfo.get("note") as string,
             date: new Date().toLocaleDateString(),
         };
-        additionalTask(newTask);
+        onAddTask(newTask);
         setXpValue(0);
         form.reset();
     };

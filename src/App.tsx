@@ -2,16 +2,30 @@
 //import reactLogo from './assets/react.svg'
 //import viteLogo from '/vite.svg'
 import './App.css'
+import { useState, useEffect } from "react";
 import ProgressBar from './components/ProgressBar';
 import { getLevelFromXP } from './utilities/getLevelFromXP'
 import { useXPStore } from './store/useXPStore';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import XPLogList from './components/XPLogList';
+import { fetchTasks, addTask } from "./api/tasks";
+import type { Task } from "./store/useXPStore";
 
 function App() {
   const currentXP = useXPStore((state) => state.xp);// This would be fetched or calculated based on current level
   const levelInfo = getLevelFromXP(currentXP);
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTasks().then(setTasks).catch(console.error);
+  }, []);
+
+  async function handleAddTask(newTask: Task) {
+    const added = await addTask(newTask);
+    setTasks(prev => [...prev, added]);
+  }
 
   return (
     <div className="p-6">
@@ -19,7 +33,7 @@ function App() {
       <div className="flex justify-between items-start gap-8 w-full">
         {/* Task Form on the left */}
         <div className="flex-1">
-          <TaskForm />
+          <TaskForm onAddTask={handleAddTask} />
         </div>
         {/* Progress Bar in the center */}
         <div className="flex flex-col items-center flex-1">
@@ -37,7 +51,7 @@ function App() {
         </div>
         {/* Task List on the right */}
         <div className="flex-1">
-          <TaskList />
+          <TaskList tasks={tasks} />
         </div>
       </div>
     </div>

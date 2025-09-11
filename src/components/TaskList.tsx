@@ -2,11 +2,11 @@ import { useXPStore } from "../store/useXPStore";
 import type { Task } from "../store/useXPStore";
 
 
-export default function TaskList() {
-  const tasks = useXPStore((state) => state.tasks);
+export default function TaskList({tasks}: {tasks?: Task[]}) {
+  
   const gainXP = useXPStore((state) => state.gainXP);
 
-  if (tasks.length === 0) {
+  if (!tasks || tasks.length === 0) {
     return <p className="text-gray-500">No tasks logged yet.</p>;
   }
 
@@ -14,8 +14,9 @@ export default function TaskList() {
   const grouped = groupTasksByCategory(tasks);
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold mb-4 text-center tracking-wide">Activity List</h2>
+    <>
+    <h2 className="text-2xl font-bold mb-4 text-center tracking-wide">Activity List</h2>
+    <div className="space-y-6 w-full max-h-[400px] overflow-y-auto">
       {Object.entries(grouped).map(([category, tasks]) => (
         <div key={category}>
           <h2 className="text-xl font-semibold mb-2">
@@ -32,12 +33,12 @@ export default function TaskList() {
                   <p className="text-sm text-gray-500 text-left">{task.note}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-blue-600 font-bold">{task.xp} XP</span>
+                  <span className="text-blue-600 font-bold whitespace-nowrap">{task.xp} XP</span>
                   <button
-                    className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition"
+                    className="bg-green-500 text-white px-2 py-1 whitespace-nowrap rounded hover:bg-green-600 transition"
                     onClick={() => gainXP(task)}
                   >
-                    Gain XP
+                    Claim XP
                   </button>
                 </div>
               </li>
@@ -46,6 +47,7 @@ export default function TaskList() {
         </div>
       ))}
     </div>
+    </>
   );
 }
 
