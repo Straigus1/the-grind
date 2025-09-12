@@ -13,3 +13,11 @@ export async function addTask(task: Record<string, unknown>) {
   if (!res.ok) throw new Error('Failed to add task');
   return res.json();
 }
+
+export async function deleteTask(id: string) {
+  const res = await fetch(`http://localhost:4000/tasks/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Failed to delete task');
+  return res.json();
+}

@@ -1,9 +1,8 @@
-import { useXPStore } from "../store/useXPStore";
+import type { XPLogType } from "../store/useXPStore";
 
-export default function XPLogList() {
-  const xpLog = useXPStore((state) => state.xpLog);
 
-  if (xpLog.length === 0) {
+export default function XPLogList({ xpLog }: { xpLog: XPLogType[] }) {
+  if (!xpLog || xpLog.length === 0) {
     return <p className="text-gray-500">No XP log entries yet.</p>;
   }
 

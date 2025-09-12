@@ -5,17 +5,27 @@ import './App.css'
 import { useState, useEffect } from "react";
 import ProgressBar from './components/ProgressBar';
 import { getLevelFromXP } from './utilities/getLevelFromXP'
-import { useXPStore } from './store/useXPStore';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import XPLogList from './components/XPLogList';
-import { fetchTasks, addTask } from "./api/tasks";
+import { fetchTasks, addTask, deleteTask } from "./api/tasks";
+import { fetchXP, addXP, fetchXPLog } from "./api/xp";
 import type { Task } from "./store/useXPStore";
 
 function App() {
-  const currentXP = useXPStore((state) => state.xp);// This would be fetched or calculated based on current level
-  const levelInfo = getLevelFromXP(currentXP);
+  const [currentXP, setCurrentXP] = useState(0);
+  const [xpLog, setXPLog] = useState([]);
 
+  useEffect(() => {
+  fetchXP().then(data => setCurrentXP(data.xp));
+  fetchXPLog().then(setXPLog);
+}, []);
+
+  async function handleAddXP(amount: number, task: Task) {
+  const data = await addXP(amount, task); 
+  setCurrentXP(data.xp);                  
+  fetchXPLog().then(setXPLog);           
+}
   const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
@@ -24,18 +34,23 @@ function App() {
 
   async function handleAddTask(newTask: Task) {
     const added = await addTask(newTask);
-    setTasks(prev => [...prev, added]);
+    setTasks(p => [...p, added]);
   }
+
+  async function handleDeleteTask(id: string) {
+  await deleteTask(id);
+  setTasks(p => p.filter(task => task.id !== id));
+}
+
+   const levelInfo = getLevelFromXP(currentXP);
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">XP Tracker</h1>
       <div className="flex justify-between items-start gap-8 w-full">
-        {/* Task Form on the left */}
         <div className="flex-1">
           <TaskForm onAddTask={handleAddTask} />
         </div>
-        {/* Progress Bar in the center */}
         <div className="flex flex-col items-center flex-1">
           <p>XP: {currentXP}</p>
           <p>Level: {levelInfo.currentLevel}</p>
@@ -47,11 +62,10 @@ function App() {
             nextXPTotal={levelInfo.xpTotalforNextLevel} 
             prevXPTotal={levelInfo.xpTotalforPreviouslevel} 
           />
-          <XPLogList />
+          <XPLogList xpLog={xpLog} />
         </div>
-        {/* Task List on the right */}
         <div className="flex-1">
-          <TaskList tasks={tasks} />
+          <TaskList tasks={tasks} onAddXP={handleAddXP} onDeleteTask={handleDeleteTask} />
         </div>
       </div>
     </div>

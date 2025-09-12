@@ -1,10 +1,8 @@
-import { useXPStore } from "../store/useXPStore";
+import type { TaskListProps } from "../store/useXPStore";
 import type { Task } from "../store/useXPStore";
 
 
-export default function TaskList({tasks}: {tasks?: Task[]}) {
-  
-  const gainXP = useXPStore((state) => state.gainXP);
+export default function TaskList({ tasks, onAddXP, onDeleteTask }: TaskListProps) {
 
   if (!tasks || tasks.length === 0) {
     return <p className="text-gray-500">No tasks logged yet.</p>;
@@ -36,10 +34,20 @@ export default function TaskList({tasks}: {tasks?: Task[]}) {
                   <span className="text-blue-600 font-bold whitespace-nowrap">{task.xp} XP</span>
                   <button
                     className="bg-green-500 text-white px-2 py-1 whitespace-nowrap rounded hover:bg-green-600 transition"
-                    onClick={() => gainXP(task)}
+                    onClick={() => onAddXP(task.xp, task)}
                   >
                     Claim XP
                   </button>
+                  <button
+                      className="bg-red-500 text-white px-2 py-1 whitespace-nowrap rounded hover:bg-red-600 transition"
+                      onClick={() => {
+                        if (window.confirm("Are you sure you want to delete this task?")) {
+                          onDeleteTask(task.id);
+                        }
+                      }}
+                    >
+                      X
+                    </button>
                 </div>
               </li>
             ))}

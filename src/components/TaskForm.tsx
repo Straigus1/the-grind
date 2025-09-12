@@ -1,9 +1,6 @@
 import { useState } from "react";
-import type { Task } from "../store/useXPStore"
+import type { TaskFormProps } from "../store/useXPStore";
 
-type TaskFormProps = {
-    onAddTask: (task: Task) => void;
-};
 
 export default function TaskForm({ onAddTask }: TaskFormProps) {
 

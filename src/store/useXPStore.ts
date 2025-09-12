@@ -9,7 +9,7 @@ export type Task = {
   date: string;
 };
 
-export type XPLog = {
+export type XPLogType = {
   id: string;
   title: string;
   xp: number;
@@ -20,9 +20,19 @@ export type XPLog = {
 type XPStore = {
   xp: number;
   tasks: Task[];
-  xpLog: XPLog[];
+  xpLog: XPLogType[];
   addTask: (task: Task) => void;
   gainXP: (task: Task) => void;
+};
+
+export type TaskListProps = {
+  tasks?: Task[];
+  onAddXP: (amount: number, task: Task) => void;
+  onDeleteTask: (id: string) => void
+};
+
+export type TaskFormProps = {
+    onAddTask: (task: Task) => void;
 };
 
 export const useXPStore = create<XPStore>((set) => ({
